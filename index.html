@@ -7,8 +7,10 @@
              name='viewport'
              content='user-scalable=0'
         />
-        <title>Darts Counter</title>
+        <title>Dart Scorer</title>
     </head>
+
+    <link rel="shortcut icon" href="./icon.png" />
 
     <style>
 
@@ -39,19 +41,22 @@
         #left{
 
             float: left;
+            border: 1px solid black;
+            border-radius: 10px;
 
         }
 
         #right{
 
             float: right;
+            border: 1px solid black;
+            border-radius: 10px;
 
         }
 
         .center{
 
             width: 100%;
-            border: 1px solid black;
             text-align: center;
             padding: 10px;
             float: left;
@@ -93,6 +98,9 @@
             margin-top: 20px;
             width: 100%;
             float: left;
+            border: 1px solid black;
+            border-radius: 10px;
+            text-align: center;
 
         }
 
@@ -118,6 +126,7 @@
             font-size: 1em;
             border: 1px solid black;
             margin-top: 10px;
+            margin: auto;
 
         }
 
@@ -129,10 +138,13 @@
 
         .left,.right{
 
-            border: 1px solid black;
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
             padding: 10px;
 
         }
+
+        #turn{border-bottom: 1px solid black;}
 
         .name{
 
@@ -148,6 +160,7 @@
             font-size: 2em;
             float: left;
             width: 100%;
+            border-bottom: 0px;
 
         }
 
@@ -168,18 +181,20 @@
         #scoreInput{
 
             font-size: 2em;
-            margin: 0px;
-            border-top: 0px;
+            border: 0px;
+            width:90%;
+            float:none;
+            margin-top:5px;
+            margin-bottom:5px;
 
         }
 
         .top{
 
             float:left;
-            border: 1px solid black;
-            border-bottom: 0px;
             width: 100%;
             padding: 0px;
+            border-top: 0px;
 
         }
 
@@ -187,7 +202,12 @@
 
             font-size: 2em;
             padding: 10px;
+            border: 0px;
 
+        }
+
+        textarea:focus, input:focus{
+            outline: none;
         }
 
         .wins{width: 20%; font-size: 2em;}
@@ -224,6 +244,8 @@
 
         let turn = true;
 
+        let finishList = [];
+
         function init(){
 
             leftName = document.getElementById("leftName");
@@ -240,6 +262,7 @@
             rightStats = document.getElementById("rightStats");
 
             resize();
+            generateFinishList()
 
         }
 
@@ -264,8 +287,8 @@
                 scoreEntry.style.fontSize = (3) + 'em';
                 leftScoreList.style.fontSize = (2.5) + 'em';
                 rightScoreList.style.fontSize = (2.5) + 'em';
-                leftStats.style.fontSize = (2.5) + 'em';
-                rightStats.style.fontSize = (2.5) + 'em';
+                leftStats.style.fontSize = (3) + 'em';
+                rightStats.style.fontSize = (3) + 'em';
 
             } else {
 
@@ -280,10 +303,10 @@
                 rightWins.style.fontSize = (2) + 'em';
                 turnCounter.style.fontSize = (2) + 'em';
                 scoreEntry.style.fontSize = (2) + 'em';
-                leftScoreList.style.fontSize = (2) + 'em';
-                rightScoreList.style.fontSize = (2) + 'em';
-                leftStats.style.fontSize = (1.5) + 'em';
-                rightStats.style.fontSize = (1.5) + 'em';
+                leftScoreList.style.fontSize = (1.5) + 'em';
+                rightScoreList.style.fontSize = (1.5) + 'em';
+                leftStats.style.fontSize = (2) + 'em';
+                rightStats.style.fontSize = (2) + 'em';
 
             }
 
@@ -319,6 +342,20 @@
 
         }
 
+        function bestRoute(score){
+
+            if (score <= 170){
+
+                return finishList[score-1];
+
+            } else {
+
+                return "none";
+
+            }
+
+        }
+
         function submitNames(){
 
             let left = document.getElementById("leftNameInput");
@@ -330,7 +367,7 @@
             leftName.innerHTML = left.value;
             rightName.innerHTML = right.value;
 
-            turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn";
+            turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn - finish: " + bestRoute(maxScore)
 
             startGame()
 
@@ -368,57 +405,61 @@
 
         function addScore(score){
 
-            if (!isValidInt(score) || parseInt(score) > 180){
+            score = score.toLowerCase();
 
-                if (score == "help"){
+            if (score == "help"){
 
-                    alert("undo - undo the last score entered\nreset - reset the current game and win counters");
+                alert("scores can be entered as:\n - 150\n - T20+D20+Bull\n - t20+d20+b\ncommands are:\n - undo: undo the last score entered\n - reset: reset the current game and win counters");
 
-                } else if (score == "undo"){
+            } else if (score == "undo"){
 
-                    if (!turn){
+                if (!turn){
 
-                        if (leftScores.length <= 0){return;}
+                    if (leftScores.length <= 0){return;}
 
-                        leftScoreList.innerHTML = leftScoreList.innerHTML.substr(0, leftScoreList.innerHTML.length-5);
-                        endIndex = leftScoreList.innerHTML.lastIndexOf("<hr>") + 4;
-                        if (endIndex == 3){leftScoreList.innerHTML = "";}
-                        else{leftScoreList.innerHTML = leftScoreList.innerHTML.substr(0, endIndex);}
+                    leftScoreList.innerHTML = leftScoreList.innerHTML.substr(0, leftScoreList.innerHTML.length-5);
+                    endIndex = leftScoreList.innerHTML.lastIndexOf("<hr>") + 4;
+                    if (endIndex == 3){leftScoreList.innerHTML = "";}
+                    else{leftScoreList.innerHTML = leftScoreList.innerHTML.substr(0, endIndex);}
 
-                        turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn";
-                        leftScore.innerHTML = parseInt(leftScore.innerHTML) + leftScores.pop(leftScores.length-1);
-
-                    } else {
-
-                        if (rightScores.length <= 0){return;}
-
-                        rightScoreList.innerHTML = rightScoreList.innerHTML.substr(0, rightScoreList.innerHTML.length-5);
-                        endIndex = rightScoreList.innerHTML.lastIndexOf("<hr>") + 4;
-                        if (endIndex == 3){rightScoreList.innerHTML = "";}
-                        else{rightScoreList.innerHTML = rightScoreList.innerHTML.substr(0, endIndex);}
-
-                        turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn";
-                        rightScore.innerHTML = parseInt(rightScore.innerHTML) + rightScores.pop(rightScores.length-1);
-
-                    }
-
-                    turn = !turn;
-
-                } else if (score == "reset"){
-
-                    resetGame();
-                    leftWins.innerHTML = 0;
-                    rightWins.innerHTML = 0;
+                    turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn - finish: " + bestRoute(parseInt(leftScore.innerHTML))
+                    leftScore.innerHTML = parseInt(leftScore.innerHTML) + leftScores.pop(leftScores.length-1);
 
                 } else {
 
-                    alert("not a valid score or command");
+                    if (rightScores.length <= 0){return;}
+
+                    rightScoreList.innerHTML = rightScoreList.innerHTML.substr(0, rightScoreList.innerHTML.length-5);
+                    endIndex = rightScoreList.innerHTML.lastIndexOf("<hr>") + 4;
+                    if (endIndex == 3){rightScoreList.innerHTML = "";}
+                    else{rightScoreList.innerHTML = rightScoreList.innerHTML.substr(0, endIndex);}
+
+                    turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn - finish: " + bestRoute(parseInt(rightScore.innerHTML))
+                    rightScore.innerHTML = parseInt(rightScore.innerHTML) + rightScores.pop(rightScores.length-1);
 
                 }
 
+                turn = !turn;
+
+            } else if (score == "reset"){
+
+                resetGame();
+                leftWins.innerHTML = 0;
+                rightWins.innerHTML = 0;
+
             } else {
 
-                score = parseInt(score);
+                score = score.replace(/bullseye/g, "50")
+                score = score.replace(/bull/g, "50")
+                score = score.replace(/b/g, "50")
+                score = score.replace(/t/g, "3*")
+                score = score.replace(/d/g, "2*")
+                try {
+                    score = parseInt(eval(score));
+                } catch (e) {
+                    alert('not valid, try typing "help"')
+                    return;
+                }
 
                 if (turn){
 
@@ -427,7 +468,7 @@
                     leftTotal += score;
                     leftNum += 1;
                     leftScoreList.scrollTop = leftScoreList.scrollHeight;
-                    turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn";
+                    turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn - finish: " + bestRoute(parseInt(rightScore.innerHTML))
 
                     newScore = parseInt(leftScore.innerHTML) - score;
                     if (newScore == 0 || newScore >= 2) {
@@ -452,7 +493,7 @@
                     rightTotal += score;
                     rightNum += 1;
                     rightScoreList.scrollTop = rightScoreList.scrollHeight;
-                    turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn";
+                    turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn - finish: " + bestRoute(parseInt(leftScore.innerHTML))
 
                     newScore = parseInt(rightScore.innerHTML) - score;
                     if (newScore >= 0) {
@@ -482,6 +523,97 @@
         function round(num){
 
             return num.toFixed(1);
+
+        }
+
+        function multiplierToLetter(multi){
+
+            switch (multi) {
+                case 1:
+                    return ""
+                    break;
+                case 2:
+                    return "D"
+                    break;
+                case 3:
+                    return "T"
+                    break;
+                default:
+                    return ""
+                    break;
+
+            }
+
+        }
+
+        function generateFinishList(){
+
+            for (let i=1; i<=170; i++){
+
+                finishList.push(finishers(i))
+
+            }
+
+        }
+
+        function finishers(score){
+
+            let dart1 = 0;
+            let dart1Mod = 1;
+            let dart2 = 0;
+            let dart2Mod = 1;
+            let dart3 = 0;
+            let dart3Mod = 2;
+
+            bestString = "none";
+            bestSum = 0;
+
+            for (dart1Mod = 3; dart1Mod >= 1; dart1Mod--) {
+
+                for (dart2Mod = 3; dart2Mod >= 2; dart2Mod--) {
+
+                    for (dart1 = 20; dart1 >= 1; dart1--) {
+
+                        for (dart2 = 20; dart2 >= 1; dart2--) {
+
+                            for (dart3 = 20; dart3 >= 0; dart3--) {
+
+                                testScore = score - dart1*dart1Mod - dart2*dart2Mod - dart3*dart3Mod;
+                                if (testScore == 0 || (testScore == 50 && dart3 == 0)){
+
+                                    returnString = "";
+                                    returnString += multiplierToLetter(dart1Mod) + dart1 + " ";
+                                    returnString += multiplierToLetter(dart2Mod) + dart2 + " ";
+
+                                    if (testScore == 50 && dart3 == 0) {returnString += "Bull";}
+                                    else if (dart3 > 0){returnString += multiplierToLetter(dart3Mod) + dart3;}
+                                    else if (dart3 == 0 && dart2Mod != 2) {continue;}
+
+                                    sum = 5*dart1+3*dart2+dart3
+
+                                    if (dart3 == 0 && testScore == 0){sum += 100;}
+                                    if (dart1Mod == 3){sum += 50;}
+
+                                    if (sum > bestSum){
+
+                                        bestSum = sum;
+                                        bestString = returnString;
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            return bestString;
 
         }
 
@@ -571,6 +703,7 @@
             <div id="bottom">
 
                 <div id="turn" class="center">ERROR's turn</div>
+                <br>
                 <input type="text"  class="center" id="scoreInput" placeholder='enter score or command (try "help")' onkeypress=keyPress(event)></input>
 
             </div>
