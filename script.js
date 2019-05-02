@@ -195,6 +195,7 @@ function updateStats(){
 
     resize();
 
+
 }
 
 function isValidInt(str) {return /^(0|[1-9]\d*)$/.test(str);}
@@ -257,6 +258,7 @@ function addScore(score){
         resetGame();
         leftWins.innerHTML = 0;
         rightWins.innerHTML = 0;
+        resize();
 
     } else if (split[0] == "wins"){
 
@@ -270,6 +272,8 @@ function addScore(score){
 
         }
 
+        resize();
+
     } else if (split[0] == "name"){
 
         if (split[1] == "left") {
@@ -281,6 +285,8 @@ function addScore(score){
             rightName.innerHTML = capitalizeFirstLetter(score.substring(score.indexOf("right")+5+1, score.length));
 
         }
+
+        resize();
 
     } else {
 
