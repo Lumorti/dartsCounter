@@ -138,7 +138,7 @@
 
             font-size: 2em;
             border-bottom: 0px;
-            width: 70%;
+            width: 79%;
             overflow: hidden;
 
         }
@@ -249,7 +249,7 @@
 
             bot = document.getElementById("bottom");
 
-            if (window.innerHeight > window.innerWidth){
+            if (window.screen.height > window.screen.width){
 
                 let s = document.getElementById("selection");
                 s.style.fontSize = (3) + 'em';
@@ -324,6 +324,9 @@
             let left = document.getElementById("leftNameInput");
             let right = document.getElementById("rightNameInput");
 
+            if (left.value.length <= 1){left.value = "Player 1";}
+            if (right.value.length <= 1){right.value = "Player 2";}
+
             leftName.innerHTML = left.value;
             rightName.innerHTML = right.value;
 
@@ -365,7 +368,7 @@
 
         function addScore(score){
 
-            if (!isValidInt(score)){
+            if (!isValidInt(score) || parseInt(score) > 180){
 
                 if (score == "help"){
 
@@ -524,11 +527,9 @@
 
             <div id="nameSelect">
 
-                Player 1's name:
-                <input type="text" id="leftNameInput" value="Luke"><br>
+                <input type="text" id="leftNameInput" value="" placeholder="Player 1's name"><br>
                 <br>
-                Player 2's name:
-                <input type="text" id="rightNameInput" value="Kate"><br>
+                <input type="text" id="rightNameInput" value="" placeholder="Player 2's name"><br>
                 <br>
                 <button id="submitNames" class="numSel" onclick="submitNames()">Begin</button>
 
