@@ -1,0 +1,205 @@
+* {
+
+    box-sizing: border-box;
+
+}
+
+body{
+
+    box-sizing: content-box;
+    text-align: center;
+    font-size: 1em;
+    padding: 10px;
+    float: left;
+
+}
+
+#left,#right{
+
+    width: 49%;
+    font-size: 1em;
+
+}
+
+
+#left{
+
+    float: left;
+    border: 1px solid black;
+    border-radius: 10px;
+
+}
+
+#right{
+
+    float: right;
+    border: 1px solid black;
+    border-radius: 10px;
+
+}
+
+.center{
+
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    float: left;
+
+}
+
+#turn{
+
+    font-size: 2em;
+    display: inline-block;
+
+}
+
+#selection{
+
+    width: 70%;
+    padding: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 2em;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+}
+
+#nameSelect{
+
+    display: none;
+
+}
+
+#bottom{
+
+    margin-top: 20px;
+    width: 100%;
+    float: left;
+    border: 1px solid black;
+    border-radius: 10px;
+    text-align: center;
+
+}
+
+.numSel{
+
+    font-size: 1em;
+    width: 50%;
+    height: 2.5em;
+    margin-top: 15px;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: #f5f5f5;
+    outline:none;
+
+}
+
+#but301{
+
+    margin-top: 30px;
+
+}
+
+input{
+
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid black;
+    margin-top: 10px;
+    margin: auto;
+
+}
+
+#game{
+
+    display: none;
+
+}
+
+.left,.right{
+
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 10px;
+
+}
+
+#turn{border-bottom: 1px solid black;}
+
+.name{
+
+    font-size: 2em;
+    border-bottom: 0px;
+    width: 79%;
+    overflow: hidden;
+
+}
+
+.score{
+
+    font-size: 2em;
+    float: left;
+    width: 100%;
+    border-bottom: 0px;
+
+}
+
+.list{
+
+    border-bottom: 0px;
+    oerflow-x: hidden;
+    overflow-y: auto;
+    float: left;
+    width: 100%;
+    padding: 0px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: #565656;
+
+}
+
+#scoreInput{
+
+    font-size: 2em;
+    border: 0px;
+    width:90%;
+    float:none;
+    margin-top:5px;
+    margin-bottom:5px;
+
+}
+
+.top{
+
+    float:left;
+    width: 100%;
+    padding: 0px;
+    border-top: 0px;
+
+}
+
+.stats{
+
+    font-size: 2em;
+    padding: 10px;
+    border: 0px;
+
+}
+
+textarea:focus, input:focus{
+    outline: none;
+}
+
+.wins{width: 20%; font-size: 2em;}
+#leftWins{float:right; border: 0px; border-left: 1px solid black;}
+#leftName{float:left; border: 0px; }
+#rightWins{float:left; border: 0px; border-right: 1px solid black;}
+#rightName{float:right; border: 0px; }
