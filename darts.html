@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+    <head>
+        <meta charset="utf-8">
+        <meta
+             name='viewport'
+             content='user-scalable=0'
+        />
+        <title>Darts Counter</title>
+    </head>
+
+    <style>
+
+        * {
+
+            box-sizing: border-box;
+
+        }
+
+        body{
+
+            box-sizing: content-box;
+            text-align: center;
+            font-size: 1em;
+            padding: 10px;
+            float: left;
+
+        }
+
+        #left,#right{
+
+            width: 49%;
+            font-size: 1em;
+
+        }
+
+
+        #left{
+
+            float: left;
+
+        }
+
+        #right{
+
+            float: right;
+
+        }
+
+        .center{
+
+            width: 100%;
+            border: 1px solid black;
+            text-align: center;
+            padding: 10px;
+            float: left;
+
+        }
+
+        #turn{
+
+            font-size: 2em;
+            display: inline-block;
+
+        }
+
+        #selection{
+
+            width: 70%;
+            padding: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 2em;
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+
+        }
+
+        #nameSelect{
+
+            display: none;
+
+        }
+
+        #bottom{
+
+            margin-top: 20px;
+            width: 100%;
+            float: left;
+
+        }
+
+        .numSel{
+
+            font-size: 1em;
+            width: 50%;
+            height: 2.5em;
+            margin-top: 15px;
+
+        }
+
+        #but301{
+
+            margin-top: 30px;
+
+        }
+
+        input{
+
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid black;
+            margin-top: 10px;
+
+        }
+
+        #game{
+
+            display: none;
+
+        }
+
+        .left,.right{
+
+            border: 1px solid black;
+            padding: 10px;
+
+        }
+
+        .name{
+
+            font-size: 2em;
+            border-bottom: 0px;
+            width: 70%;
+            overflow: hidden;
+
+        }
+
+        .score{
+
+            font-size: 2em;
+            float: left;
+            width: 100%;
+
+        }
+
+        .list{
+
+            border-bottom: 0px;
+            oerflow-x: hidden;
+            overflow-y: scroll;
+            float: left;
+            width: 100%;
+            padding: 0px;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            color: #565656;
+
+        }
+
+        #scoreInput{
+
+            font-size: 2em;
+            margin: 0px;
+            border-top: 0px;
+
+        }
+
+        .top{
+
+            float:left;
+            border: 1px solid black;
+            border-bottom: 0px;
+            width: 100%;
+            padding: 0px;
+
+        }
+
+        .stats{
+
+            font-size: 2em;
+            padding: 10px;
+
+        }
+
+        .wins{width: 20%; font-size: 2em;}
+        #leftWins{float:right; border: 0px; border-left: 1px solid black;}
+        #leftName{float:left; border: 0px; }
+        #rightWins{float:left; border: 0px; border-right: 1px solid black;}
+        #rightName{float:right; border: 0px; }
+
+    </style>
+
+    <script type="text/javascript">
+
+        let maxScore = 301;
+
+        let leftName;
+        let rightName;
+        let leftScore;
+        let rightScore;
+        let leftScoreList;
+        let rightScoreList;
+        let scoreEntry;
+        let turnCounter;
+        let leftWins;
+        let rightWins;
+        let leftStats;
+        let rightStats;
+
+        let leftScores = [];
+        let rightScores = [];
+        let leftTotal = 0;
+        let rightTotal = 0;
+        let leftNum = 0;
+        let rightNum = 0;
+
+        let turn = true;
+
+        function init(){
+
+            leftName = document.getElementById("leftName");
+            rightName = document.getElementById("rightName");
+            leftScore = document.getElementById("leftScore");
+            rightScore = document.getElementById("rightScore");
+            leftScoreList = document.getElementById("leftList");
+            rightScoreList = document.getElementById("rightList");
+            scoreEntry = document.getElementById("scoreInput");
+            turnCounter = document.getElementById("turn");
+            leftWins = document.getElementById("leftWins");
+            rightWins = document.getElementById("rightWins");
+            leftStats = document.getElementById("leftStats");
+            rightStats = document.getElementById("rightStats");
+
+            resize();
+
+        }
+
+        window.onresize = function(event) {resize();};
+
+        function resize(){
+
+            bot = document.getElementById("bottom");
+
+            if (window.innerHeight > window.innerWidth){
+
+                let s = document.getElementById("selection");
+                s.style.fontSize = (3) + 'em';
+
+                leftName.style.fontSize = (3) + 'em';
+                leftScore.style.fontSize = (3) + 'em';
+                rightName.style.fontSize = (3) + 'em';
+                rightScore.style.fontSize = (3) + 'em';
+                leftWins.style.fontSize = (3) + 'em';
+                rightWins.style.fontSize = (3) + 'em';
+                turnCounter.style.fontSize = (3) + 'em';
+                scoreEntry.style.fontSize = (3) + 'em';
+                leftScoreList.style.fontSize = (2.5) + 'em';
+                rightScoreList.style.fontSize = (2.5) + 'em';
+                leftStats.style.fontSize = (2.5) + 'em';
+                rightStats.style.fontSize = (2.5) + 'em';
+
+            } else {
+
+                let s = document.getElementById("selection");
+                s.style.fontSize = (2) + 'em';
+
+                leftName.style.fontSize = (2) + 'em';
+                leftScore.style.fontSize = (2) + 'em';
+                rightName.style.fontSize = (2) + 'em';
+                rightScore.style.fontSize = (2) + 'em';
+                leftWins.style.fontSize = (2) + 'em';
+                rightWins.style.fontSize = (2) + 'em';
+                turnCounter.style.fontSize = (2) + 'em';
+                scoreEntry.style.fontSize = (2) + 'em';
+                leftScoreList.style.fontSize = (2) + 'em';
+                rightScoreList.style.fontSize = (2) + 'em';
+                leftStats.style.fontSize = (1.5) + 'em';
+                rightStats.style.fontSize = (1.5) + 'em';
+
+            }
+
+            leftScoreList.style.height = (window.innerHeight - bot.clientHeight- leftName.clientHeight - leftScore.clientHeight - leftStats.clientHeight - 60) + "px";
+            rightScoreList.style.height = (window.innerHeight - bot.clientHeight- rightName.clientHeight - rightScore.clientHeight - rightStats.clientHeight - 60) + "px";
+
+            leftScoreList.scrollTop = leftScoreList.scrollHeight;
+            rightScoreList.scrollTop = rightScoreList.scrollHeight;
+
+        }
+
+        function setMaxScore(score){
+
+            maxScore = score;
+            leftScore.innerHTML = maxScore;
+            rightScore.innerHTML = maxScore;
+
+            let x = document.getElementById("scoreSelect");
+            let y = document.getElementById("nameSelect");
+            x.style.display = "none";
+            y.style.display = "block";
+
+        }
+
+        function resetGame(){
+
+            leftScore.innerHTML = maxScore;
+            rightScore.innerHTML = maxScore;
+            leftList.innerHTML = "";
+            rightList.innerHTML = "";
+            leftScores = [];
+            rightScores = [];
+
+        }
+
+        function submitNames(){
+
+            let left = document.getElementById("leftNameInput");
+            let right = document.getElementById("rightNameInput");
+
+            leftName.innerHTML = left.value;
+            rightName.innerHTML = right.value;
+
+            turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn";
+
+            startGame()
+
+        }
+
+        function startGame(){
+
+            let x = document.getElementById("selection");
+
+            x.style.display = "none";
+            game.style.display = "block";
+
+            resize();
+            resetGame();
+            updateStats();
+            scoreEntry.focus();
+
+        }
+
+        function updateStats(){
+
+            let leftAvg = 0
+            if (leftNum == 0){leftAvg = 0}
+            else {leftAvg = leftTotal / leftNum}
+            leftStats.innerHTML = "averaging " + round(leftAvg)
+
+            let rightAvg = 0
+            if (rightNum == 0){rightAvg = 0}
+            else {rightAvg = rightTotal / rightNum}
+            rightStats.innerHTML = "averaging " + round(rightAvg)
+
+        }
+
+        function isValidInt(str) {return /^(0|[1-9]\d*)$/.test(str);}
+
+        function addScore(score){
+
+            if (!isValidInt(score)){
+
+                if (score == "help"){
+
+                    alert("undo - undo the last score entered\nreset - reset the current game and win counters");
+
+                } else if (score == "undo"){
+
+                    if (!turn){
+
+                        if (leftScores.length <= 0){return;}
+
+                        leftScoreList.innerHTML = leftScoreList.innerHTML.substr(0, leftScoreList.innerHTML.length-5);
+                        endIndex = leftScoreList.innerHTML.lastIndexOf("<hr>") + 4;
+                        if (endIndex == 3){leftScoreList.innerHTML = "";}
+                        else{leftScoreList.innerHTML = leftScoreList.innerHTML.substr(0, endIndex);}
+
+                        turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn";
+                        leftScore.innerHTML = parseInt(leftScore.innerHTML) + leftScores.pop(leftScores.length-1);
+
+                    } else {
+
+                        if (rightScores.length <= 0){return;}
+
+                        rightScoreList.innerHTML = rightScoreList.innerHTML.substr(0, rightScoreList.innerHTML.length-5);
+                        endIndex = rightScoreList.innerHTML.lastIndexOf("<hr>") + 4;
+                        if (endIndex == 3){rightScoreList.innerHTML = "";}
+                        else{rightScoreList.innerHTML = rightScoreList.innerHTML.substr(0, endIndex);}
+
+                        turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn";
+                        rightScore.innerHTML = parseInt(rightScore.innerHTML) + rightScores.pop(rightScores.length-1);
+
+                    }
+
+                    turn = !turn;
+
+                } else if (score == "reset"){
+
+                    resetGame();
+                    leftWins.innerHTML = 0;
+                    rightWins.innerHTML = 0;
+
+                } else {
+
+                    alert("not a valid score or command");
+
+                }
+
+            } else {
+
+                score = parseInt(score);
+
+                if (turn){
+
+                    leftScoreList.innerHTML += score + " (from " + parseInt(leftScore.innerHTML) + ")<hr>";
+                    leftScores.push(score);
+                    leftTotal += score;
+                    leftNum += 1;
+                    leftScoreList.scrollTop = leftScoreList.scrollHeight;
+                    turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn";
+
+                    newScore = parseInt(leftScore.innerHTML) - score;
+                    if (newScore == 0 || newScore >= 2) {
+
+                        leftScore.innerHTML = newScore
+                        if (newScore == 0){
+
+                            alert(leftName.innerHTML + " has won!");
+                            leftWins.innerHTML = parseInt(leftWins.innerHTML) + 1;
+                            turn = false;
+                            resetGame();
+                            return;
+
+                        }
+
+                    }
+
+                } else {
+
+                    rightScoreList.innerHTML += score + " (from " + parseInt(rightScore.innerHTML) + ")<hr>";
+                    rightScores.push(score);
+                    rightTotal += score;
+                    rightNum += 1;
+                    rightScoreList.scrollTop = rightScoreList.scrollHeight;
+                    turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn";
+
+                    newScore = parseInt(rightScore.innerHTML) - score;
+                    if (newScore >= 0) {
+
+                        rightScore.innerHTML = newScore
+                        if (newScore == 0){
+
+                            alert(rightName.innerHTML + " has won!");
+                            rightWins.innerHTML = parseInt(rightWins.innerHTML) + 1
+                            turn = true;
+                            resetGame();
+                            return;
+
+                        }
+
+                    }
+
+                }
+
+                updateStats();
+                turn = !turn
+
+            }
+
+        }
+
+        function round(num){
+
+            return num.toFixed(1);
+
+        }
+
+        function possessive(name){
+
+            if (name.substr(name.length-1,1) == "s"){return name + "'"}
+            else {return name + "'s"}
+
+        }
+
+        function keyPress(e){
+
+            e.preventDefault();
+            if (e.key == "Enter"){
+
+                addScore(scoreEntry.value)
+                scoreEntry.value = "";
+
+            } else {
+
+                scoreEntry.value += e.key;
+
+            }
+
+        }
+
+    </script>
+
+    <body onload="init()">
+
+        <div id="selection">
+
+            <div id="scoreSelect">
+
+                Starting from?<br>
+
+                <button id="but301" class="numSel" onclick="setMaxScore(301)" >301</button>
+                <button id="but501" class="numSel" onclick="setMaxScore(501)">501</button>
+                <button id="but701" class="numSel" onclick="setMaxScore(701)">701</button>
+                <button id="but1001" class="numSel" onclick="setMaxScore(1001)">1001</button>
+
+            </div>
+
+            <div id="nameSelect">
+
+                Player 1's name:
+                <input type="text" id="leftNameInput" value="Luke"><br>
+                <br>
+                Player 2's name:
+                <input type="text" id="rightNameInput" value="Kate"><br>
+                <br>
+                <button id="submitNames" class="numSel" onclick="submitNames()">Begin</button>
+
+            </div>
+
+        </div>
+
+        <div id="game">
+
+            <div id="left">
+
+                <div id="leftTop" class="left top">
+                    <div id="leftName" class="left name">ERROR</div>
+                    <div id="leftWins" class="left wins">0</div>
+                </div>
+                <div id="leftStats" class="left top stats">
+                    average: 0
+                </div>
+                <div id="leftList" class="left list"></div>
+                <div id="leftScore" class="left score">ERROR</div>
+
+            </div>
+
+            <div id="right">
+
+                <div id="rightTop" class="right top">
+                    <div id="rightName" class="right name">ERROR</div>
+                    <div id="rightWins" class="right wins">0</div>
+                </div>
+                <div id="rightStats" class="right top stats">
+                    average: 0
+                </div>
+                <div id="rightList" class="right list"></div>
+                <div id="rightScore" class="right score">ERROR</div>
+
+
+            </div>
+
+            <div id="bottom">
+
+                <div id="turn" class="center">ERROR's turn</div>
+                <input type="text"  class="center" id="scoreInput" placeholder='enter score or command (try "help")' onkeypress=keyPress(event)></input>
+
+            </div>
+
+        </div>
+
+    </body>
+
+</html>
