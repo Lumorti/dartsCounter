@@ -12,6 +12,8 @@ let leftWins;
 let rightWins;
 let leftStats;
 let rightStats;
+let leftNameEntry;
+let rightNameEntry;
 
 let leftScores = [];
 let rightScores = [];
@@ -38,6 +40,8 @@ function init(){
     rightWins = document.getElementById("rightWins");
     leftStats = document.getElementById("leftStats");
     rightStats = document.getElementById("rightStats");
+    leftNameEntry = document.getElementById("leftNameInput");
+    rightNameEntry = document.getElementById("rightNameInput");
 
     resize();
     generateFinishList()
@@ -120,13 +124,15 @@ function resetGame(){
 
     if (turn){
 
-        turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn - finish: " + bestRoute(maxScore)
+        turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn<br> " + bestRoute(maxScore)
 
     } else {
 
-        turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn - finish: " + bestRoute(maxScore)
+        turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn<br> " + bestRoute(maxScore)
 
     }
+
+    updateStats();
 
 }
 
@@ -138,7 +144,7 @@ function bestRoute(score){
 
     } else {
 
-        return "none";
+        return "T20 T20 T20";
 
     }
 
@@ -146,16 +152,13 @@ function bestRoute(score){
 
 function submitNames(){
 
-    let left = document.getElementById("leftNameInput");
-    let right = document.getElementById("rightNameInput");
+    if (leftNameEntry.value.length <= 1){leftNameEntry.value = "Player 1";}
+    if (rightNameEntry.value.length <= 1){rightNameEntry.value = "Player 2";}
 
-    if (left.value.length <= 1){left.value = "Player 1";}
-    if (right.value.length <= 1){right.value = "Player 2";}
+    leftName.innerHTML = leftNameEntry.value;
+    rightName.innerHTML = rightNameEntry.value;
 
-    leftName.innerHTML = left.value;
-    rightName.innerHTML = right.value;
-
-    turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn - finish: " + bestRoute(maxScore)
+    turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn<br> " + bestRoute(maxScore)
 
     startGame()
 
@@ -178,20 +181,20 @@ function startGame(){
 function updateStats(){
 
     leftTotal = sumArray(leftScores)
-    leftNum = leftScores.length
+    leftNum = leftScores.length;
 
-    let leftAvg = 0
+    let leftAvg = 0;
     if (leftNum == 0){leftAvg = 0}
     else {leftAvg = leftTotal / leftNum}
     leftStats.innerHTML = "averaging " + round(leftAvg)
 
     rightTotal = sumArray(rightScores)
-    rightNum = rightScores.length
+    rightNum = rightScores.length;
 
-    let rightAvg = 0
-    if (rightNum == 0){rightAvg = 0}
-    else {rightAvg = rightTotal / rightNum}
-    rightStats.innerHTML = "averaging " + round(rightAvg)
+    let rightAvg = 0;
+    if (rightNum == 0){rightAvg = 0;}
+    else {rightAvg = rightTotal / rightNum;}
+    rightStats.innerHTML = "averaging " + round(rightAvg);
 
     resize();
 
@@ -204,13 +207,15 @@ function sumArray(arr){
 
     return arr.reduce(function(a,b){
 
-        return a + b
+        return a + b;
 
     }, 0);
 
 }
 
 function addScore(score){
+
+    if (score.length < 1){return;}
 
     score = score.toLowerCase();
     split = score.split(" ")
@@ -231,7 +236,7 @@ function addScore(score){
             else{leftScoreList.innerHTML = leftScoreList.innerHTML.substr(0, endIndex);}
 
             leftScore.innerHTML = parseInt(leftScore.innerHTML) + leftScores.pop(leftScores.length-1);
-            turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn - finish: " + bestRoute(parseInt(leftScore.innerHTML))
+            turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn<br> " + bestRoute(parseInt(leftScore.innerHTML))
 
             updateStats()
 
@@ -245,7 +250,7 @@ function addScore(score){
             else{rightScoreList.innerHTML = rightScoreList.innerHTML.substr(0, endIndex);}
 
             rightScore.innerHTML = parseInt(rightScore.innerHTML) + rightScores.pop(rightScores.length-1);
-            turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn - finish: " + bestRoute(parseInt(rightScore.innerHTML))
+            turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn<br> " + bestRoute(parseInt(rightScore.innerHTML))
 
             updateStats()
 
@@ -290,22 +295,22 @@ function addScore(score){
 
     } else {
 
-        score = score.replace(/   /g, " ")
-        score = score.replace(/  /g, " ")
-        score = score.replace(/  /g, " ")
-        score = score.replace(/ \* /g, "*")
-        score = score.replace(/\* /g, "*")
-        score = score.replace(/ \*/g, "*")
-        score = score.replace(/treble /g, "3*")
-        score = score.replace(/double /g, "2*")
-        score = score.replace(/bullseye/g, "50")
-        score = score.replace(/bull/g, "50")
-        score = score.replace(/b/g, "50")
-        score = score.replace(/t /g, "3*")
-        score = score.replace(/d /g, "2*")
-        score = score.replace(/t/g, "3*")
-        score = score.replace(/d/g, "2*")
-        score = score.replace(/ /g, "+")
+        score = score.replace(/\s\s+/g, " ");
+        score = score.replace(/ \* /g, "*");
+        score = score.replace(/\* /g, "*");
+        score = score.replace(/ \*/g, "*");
+        score = score.replace(/miss /g, "0");
+        score = score.replace(/treble /g, "3*");
+        score = score.replace(/double /g, "2*");
+        score = score.replace(/bullseye/g, "50");
+        score = score.replace(/bull/g, "50");
+        score = score.replace(/x/g, "0");
+        score = score.replace(/b/g, "50");
+        score = score.replace(/t /g, "3*");
+        score = score.replace(/d /g, "2*");
+        score = score.replace(/t/g, "3*");
+        score = score.replace(/d/g, "2*");
+        score = score.replace(/ /g, "+");
 
         try {
             score = parseInt(eval(score));
@@ -332,8 +337,8 @@ function addScore(score){
             newScore = parseInt(leftScore.innerHTML) - score;
             if (newScore == 0 || newScore >= 2) {
 
-                leftScore.innerHTML = newScore
-                turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn - finish: " + bestRoute(parseInt(rightScore.innerHTML))
+                leftScore.innerHTML = newScore;
+                turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn<br> " + bestRoute(parseInt(rightScore.innerHTML))
 
                 if (newScore == 0){
 
@@ -354,12 +359,12 @@ function addScore(score){
             rightTotal += score;
             rightNum += 1;
             rightScoreList.scrollTop = rightScoreList.scrollHeight;
-            turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn - finish: " + bestRoute(parseInt(leftScore.innerHTML))
+            turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn<br> " + bestRoute(parseInt(leftScore.innerHTML))
 
             newScore = parseInt(rightScore.innerHTML) - score;
             if (newScore == 0 || newScore >= 2) {
 
-                rightScore.innerHTML = newScore
+                rightScore.innerHTML = newScore;
 
                 if (newScore == 0){
 
@@ -376,7 +381,7 @@ function addScore(score){
         }
 
         updateStats();
-        turn = !turn
+        turn = !turn;
 
     }
 
@@ -396,16 +401,16 @@ function multiplierToLetter(multi){
 
     switch (multi) {
         case 1:
-            return ""
+            return "";
             break;
         case 2:
-            return "D"
+            return "D";
             break;
         case 3:
-            return "T"
+            return "T";
             break;
         default:
-            return ""
+            return "";
             break;
 
     }
@@ -457,7 +462,7 @@ function finishers(score){
                             if (testScore == 50 && dart3 == 0) {returnString += "Bull";}
                             else if (dart3 > 0){returnString += multiplierToLetter(dart3Mod) + dart3;}
 
-                            sum = 5*dart1+3*dart2+dart3
+                            sum = 5*dart1+3*dart2+dart3;
                             if (dart2 == 0 && dart3 == 0 && testScore == 0){sum += 300;}
                             else if (dart3 == 0 && testScore == 0){sum += 100;}
                             if (dart1Mod == 3){sum += 50;}
