@@ -308,6 +308,13 @@ function addScore(score){
             return;
         }
 
+        if (parseInt(score) > 180){
+
+            alert('not a valid total for 3 darts')
+            return;
+
+        }
+
         if (turn){
 
             leftScoreList.innerHTML += score + " (from " + parseInt(leftScore.innerHTML) + ")<hr>";
