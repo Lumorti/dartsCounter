@@ -391,6 +391,30 @@ function addScore(score){
 
         }
 
+        if (leftDarts < 3 && rightDarts < 3){
+
+            let res = prompt("Who wins? l or r");
+
+            if (res[0] == "l") {
+
+                alert(leftName.innerHTML + " has won!");
+                leftWins.innerHTML = parseInt(leftWins.innerHTML) + 1;
+                turn = false;
+                resetGame();
+                return;
+
+            } else {
+
+                alert(rightName.innerHTML + " has won!");
+                rightWins.innerHTML = parseInt(rightWins.innerHTML) + 1;
+                turn = false;
+                resetGame();
+                return;
+
+            }
+
+        }
+
         updateStats();
         turn = !turn;
 
