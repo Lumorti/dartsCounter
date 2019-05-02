@@ -117,6 +117,8 @@
             width: 50%;
             height: 2.5em;
             margin-top: 15px;
+            border-radius: 10px;
+            background-color: #f5f5f5;
 
         }
 
@@ -406,10 +408,16 @@
 
         function updateStats(){
 
+            leftTotal = sumArray(leftScores)
+            leftNum = leftScores.length
+
             let leftAvg = 0
             if (leftNum == 0){leftAvg = 0}
             else {leftAvg = leftTotal / leftNum}
             leftStats.innerHTML = "averaging " + round(leftAvg)
+
+            rightTotal = sumArray(rightScores)
+            rightNum = rightScores.length
 
             let rightAvg = 0
             if (rightNum == 0){rightAvg = 0}
@@ -419,6 +427,16 @@
         }
 
         function isValidInt(str) {return /^(0|[1-9]\d*)$/.test(str);}
+
+        function sumArray(arr){
+
+            return arr.reduce(function(a,b){
+
+                return a + b
+
+            }, 0);
+
+        }
 
         function addScore(score){
 
@@ -442,6 +460,8 @@
                     leftScore.innerHTML = parseInt(leftScore.innerHTML) + leftScores.pop(leftScores.length-1);
                     turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn - finish: " + bestRoute(parseInt(leftScore.innerHTML))
 
+                    updateStats()
+
                 } else {
 
                     if (rightScores.length <= 0){return;}
@@ -453,6 +473,8 @@
 
                     rightScore.innerHTML = parseInt(rightScore.innerHTML) + rightScores.pop(rightScores.length-1);
                     turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn - finish: " + bestRoute(parseInt(rightScore.innerHTML))
+
+                    updateStats()
 
                 }
 
