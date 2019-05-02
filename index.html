@@ -426,6 +426,8 @@
             else {rightAvg = rightTotal / rightNum}
             rightStats.innerHTML = "averaging " + round(rightAvg)
 
+            resize();
+
         }
 
         function isValidInt(str) {return /^(0|[1-9]\d*)$/.test(str);}
@@ -443,12 +445,13 @@
         function addScore(score){
 
             score = score.toLowerCase();
+            split = score.split(" ")
 
-            if (score == "help"){
+            if (split[0] == "help"){
 
-                alert("scores can be entered as:\n - 150\n - T20+D20+Bull\n - t20 d20 b\n\ncommands are:\n - undo: undo the last score entered\n - reset: reset the current game and scores");
+                alert("scores can be entered as:\n - 150\n - T20+D20 Bull\n - t20 d20 b\n - treble 20 double 20 bullseye\n - 2*d20 6\n\ncan also use:\n - undo: undo the last score entered\n - reset: reset the match\n - set <left|right> <num>: set either score");
 
-            } else if (score == "undo"){
+            } else if (split[0] == "undo"){
 
                 if (!turn){
 
@@ -482,20 +485,47 @@
 
                 turn = !turn;
 
-            } else if (score == "reset"){
+            } else if (split[0] == "reset"){
 
                 resetGame();
                 leftWins.innerHTML = 0;
                 rightWins.innerHTML = 0;
 
+            } else if (split[0] == "set"){
+
+                if (split[1] == "left") {
+
+                    leftWins.innerHTML = split[2];
+
+                } else if (split[1] == "right") {
+
+                    rightWins.innerHTML = split[2];
+
+                }
+
             } else {
 
+                score = score.replace(/and/g, " ")
+                score = score.replace(/ a /g, "  ")
+                score = score.replace(/an/g, " ")
+                score = score.replace(/  /g, " ")
+                score = score.replace(/  /g, " ")
+                score = score.replace(/ \* /g, "*")
+                score = score.replace(/\* /g, "*")
+                score = score.replace(/ \*/g, "*")
+                score = score.replace(/treble /g, "3*")
+                score = score.replace(/double /g, "2*")
                 score = score.replace(/bullseye/g, "50")
                 score = score.replace(/bull/g, "50")
                 score = score.replace(/b/g, "50")
+                score = score.replace(/t /g, "3*")
+                score = score.replace(/d /g, "2*")
                 score = score.replace(/t/g, "3*")
                 score = score.replace(/d/g, "2*")
                 score = score.replace(/\s/g, "+")
+                score = score.replace(/\+\+/g, "+")
+                score = score.replace(/\+\+/g, "+")
+                score = score.replace(/\+\+/g, "+")
                 try {
                     score = parseInt(eval(score));
                 } catch (e) {
@@ -750,7 +780,7 @@
 
                 <div id="turn" class="center">ERROR's turn</div>
                 <br>
-                <input type="text"  class="center" id="scoreInput" placeholder='enter score or "help"' onkeypress=keyPress(event)></input>
+                <input type="text"  class="center" id="scoreInput" placeholder='enter "help"' onkeypress=keyPress(event)></input>
 
             </div>
 
