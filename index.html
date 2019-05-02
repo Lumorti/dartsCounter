@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<!--
+
+    Made by Luke Mortimer (Lumorti) in 2019
+    Hosted at https://lumorti.github.io/dartsCounter/
+    "Source" at https://github.com/Lumorti/dartsCounter
+
+-->
 <html lang="en" dir="ltr">
 
     <head>
@@ -340,6 +347,16 @@
             leftScores = [];
             rightScores = [];
 
+            if (turn){
+
+                turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn - finish: " + bestRoute(maxScore)
+
+            } else {
+
+                turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn - finish: " + bestRoute(maxScore)
+
+            }
+
         }
 
         function bestRoute(score){
@@ -409,7 +426,7 @@
 
             if (score == "help"){
 
-                alert("scores can be entered as:\n - 150\n - T20+D20+Bull\n - t20+d20+b\ncommands are:\n - undo: undo the last score entered\n - reset: reset the current game and win counters");
+                alert("scores can be entered as:\n - 150\n - T20+D20+Bull\n - t20 d20 b\ncommands are:\n - undo: undo the last score entered\n - reset: reset the current game and scores");
 
             } else if (score == "undo"){
 
@@ -422,8 +439,8 @@
                     if (endIndex == 3){leftScoreList.innerHTML = "";}
                     else{leftScoreList.innerHTML = leftScoreList.innerHTML.substr(0, endIndex);}
 
-                    turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn - finish: " + bestRoute(parseInt(leftScore.innerHTML))
                     leftScore.innerHTML = parseInt(leftScore.innerHTML) + leftScores.pop(leftScores.length-1);
+                    turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn - finish: " + bestRoute(parseInt(leftScore.innerHTML))
 
                 } else {
 
@@ -434,8 +451,8 @@
                     if (endIndex == 3){rightScoreList.innerHTML = "";}
                     else{rightScoreList.innerHTML = rightScoreList.innerHTML.substr(0, endIndex);}
 
-                    turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn - finish: " + bestRoute(parseInt(rightScore.innerHTML))
                     rightScore.innerHTML = parseInt(rightScore.innerHTML) + rightScores.pop(rightScores.length-1);
+                    turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn - finish: " + bestRoute(parseInt(rightScore.innerHTML))
 
                 }
 
@@ -454,6 +471,7 @@
                 score = score.replace(/b/g, "50")
                 score = score.replace(/t/g, "3*")
                 score = score.replace(/d/g, "2*")
+                score = score.replace(/\s/g, "+")
                 try {
                     score = parseInt(eval(score));
                 } catch (e) {
@@ -468,12 +486,13 @@
                     leftTotal += score;
                     leftNum += 1;
                     leftScoreList.scrollTop = leftScoreList.scrollHeight;
-                    turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn - finish: " + bestRoute(parseInt(rightScore.innerHTML))
 
                     newScore = parseInt(leftScore.innerHTML) - score;
                     if (newScore == 0 || newScore >= 2) {
 
                         leftScore.innerHTML = newScore
+                        turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn - finish: " + bestRoute(parseInt(rightScore.innerHTML))
+
                         if (newScore == 0){
 
                             alert(leftName.innerHTML + " has won!");
@@ -496,14 +515,15 @@
                     turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn - finish: " + bestRoute(parseInt(leftScore.innerHTML))
 
                     newScore = parseInt(rightScore.innerHTML) - score;
-                    if (newScore >= 0) {
+                    if (newScore == 0 || newScore >= 2) {
 
                         rightScore.innerHTML = newScore
+
                         if (newScore == 0){
 
                             alert(rightName.innerHTML + " has won!");
-                            rightWins.innerHTML = parseInt(rightWins.innerHTML) + 1
-                            turn = true;
+                            rightWins.innerHTML = parseInt(rightWins.innerHTML) + 1;
+                            turn = false;
                             resetGame();
                             return;
 
@@ -659,9 +679,9 @@
 
             <div id="nameSelect">
 
-                <input type="text" id="leftNameInput" value="" placeholder="Player 1's name"><br>
+                <input type="text" id="leftNameInput" value="" placeholder="Player 1"><br>
                 <br>
-                <input type="text" id="rightNameInput" value="" placeholder="Player 2's name"><br>
+                <input type="text" id="rightNameInput" value="" placeholder="Player 2"><br>
                 <br>
                 <button id="submitNames" class="numSel" onclick="submitNames()">Begin</button>
 
