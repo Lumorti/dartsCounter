@@ -571,6 +571,7 @@
             for (let i=1; i<=170; i++){
 
                 finishList.push(finishers(i))
+                console.log(i + " = " + finishList[i-1]);
 
             }
 
@@ -594,24 +595,25 @@
 
                     for (dart1 = 20; dart1 >= 1; dart1--) {
 
-                        for (dart2 = 20; dart2 >= 1; dart2--) {
+                        for (dart2 = 20; dart2 >= 0; dart2--) {
 
                             for (dart3 = 20; dart3 >= 0; dart3--) {
+
+                                if (dart3 == 0 && dart2 != 0 && dart2Mod != 2) {continue;}
+                                else if (dart2 == 0 && dart1 != 0 && dart1Mod != 2) {continue;}
 
                                 testScore = score - dart1*dart1Mod - dart2*dart2Mod - dart3*dart3Mod;
                                 if (testScore == 0 || (testScore == 50 && dart3 == 0)){
 
                                     returnString = "";
                                     returnString += multiplierToLetter(dart1Mod) + dart1 + " ";
-                                    returnString += multiplierToLetter(dart2Mod) + dart2 + " ";
-
+                                    if (dart2 > 0){returnString += multiplierToLetter(dart2Mod) + dart2 + " ";}
                                     if (testScore == 50 && dart3 == 0) {returnString += "Bull";}
                                     else if (dart3 > 0){returnString += multiplierToLetter(dart3Mod) + dart3;}
-                                    else if (dart3 == 0 && dart2Mod != 2) {continue;}
 
                                     sum = 5*dart1+3*dart2+dart3
-
-                                    if (dart3 == 0 && testScore == 0){sum += 100;}
+                                    if (dart2 == 0 && dart3 == 0 && testScore == 0){sum += 300;}
+                                    else if (dart3 == 0 && testScore == 0){sum += 100;}
                                     if (dart1Mod == 3){sum += 50;}
 
                                     if (sum > bestSum){
@@ -724,7 +726,7 @@
 
                 <div id="turn" class="center">ERROR's turn</div>
                 <br>
-                <input type="text"  class="center" id="scoreInput" placeholder='enter score or command (try "help")' onkeypress=keyPress(event)></input>
+                <input type="text"  class="center" id="scoreInput" placeholder='enter score or "help"' onkeypress=keyPress(event)></input>
 
             </div>
 
