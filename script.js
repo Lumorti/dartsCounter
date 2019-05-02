@@ -278,7 +278,7 @@ function addScore(score){
 
         } else if (split[1] == "right") {
 
-            rightName.innerHTML = capitalizeFirstLetter(score.substring(score.indexOf("left")+4+1, score.length));
+            rightName.innerHTML = capitalizeFirstLetter(score.substring(score.indexOf("right")+5+1, score.length));
 
         }
 
