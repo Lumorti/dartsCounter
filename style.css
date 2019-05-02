@@ -202,7 +202,7 @@ textarea:focus, input:focus{
 }
 
 .wins{width: 20%; font-size: 2em;}
-#leftWins{float:right; border: 0px; border-left: 1px solid black;}
-#leftName{float:left; border: 0px; }
-#rightWins{float:left; border: 0px; border-right: 1px solid black;}
-#rightName{float:right; border: 0px; }
+#leftWins{float:right; border: 0px; }
+#leftName{float:left; border: 0px; border-right: 1px solid black;}
+#rightWins{float:left; border: 0px; }
+#rightName{float:right; border: 0px;border-left: 1px solid black; }
