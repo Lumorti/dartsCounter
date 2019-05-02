@@ -623,10 +623,11 @@
 
                             for (dart3 = 20; dart3 >= 0; dart3--) {
 
-                                if (dart3 == 0 && dart2 != 0 && dart2Mod != 2) {continue;}
-                                else if (dart2 == 0 && dart1 != 0 && dart1Mod != 2) {continue;}
-
                                 testScore = score - dart1*dart1Mod - dart2*dart2Mod - dart3*dart3Mod;
+
+                                if (dart3 == 0 && dart2 != 0 && dart2Mod != 2 && testScore != 50) {continue;}
+                                else if (dart2 == 0 && dart1 != 0 && dart1Mod != 2 && testScore != 50) {continue;}
+
                                 if (testScore == 0 || (testScore == 50 && dart3 == 0)){
 
                                     returnString = "";
