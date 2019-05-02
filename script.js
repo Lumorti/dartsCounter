@@ -22,6 +22,9 @@ let rightTotal = 0;
 let leftNum = 0;
 let rightNum = 0;
 
+let leftDarts = 60;
+let rightDarts = 60;
+
 let turn = true;
 
 let finishList = [];
@@ -124,11 +127,11 @@ function resetGame(){
 
     if (turn){
 
-        turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn<br> " + bestRoute(maxScore)
+        turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn (" + leftDarts + " left)"  + bestRoute(maxScore)
 
     } else {
 
-        turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn<br> " + bestRoute(maxScore)
+        turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn (" + rightDarts + " left)"  + bestRoute(maxScore)
 
     }
 
@@ -140,11 +143,11 @@ function bestRoute(score){
 
     if (score <= 170){
 
-        return finishList[score-1];
+        return "<br>checkout " + finishList[score-1];
 
     } else {
 
-        return "T20 T20 T20";
+        return "";
 
     }
 
@@ -158,7 +161,7 @@ function submitNames(){
     leftName.innerHTML = leftNameEntry.value;
     rightName.innerHTML = rightNameEntry.value;
 
-    turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn<br> " + bestRoute(maxScore)
+    turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn (" + leftDarts + " left)"  + bestRoute(maxScore)
 
     startGame()
 
@@ -235,8 +238,10 @@ function addScore(score){
             if (endIndex == 3){leftScoreList.innerHTML = "";}
             else{leftScoreList.innerHTML = leftScoreList.innerHTML.substr(0, endIndex);}
 
+            leftDarts += 3;
+
             leftScore.innerHTML = parseInt(leftScore.innerHTML) + leftScores.pop(leftScores.length-1);
-            turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn<br> " + bestRoute(parseInt(leftScore.innerHTML))
+            turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn (" + leftDarts + " left)"  + bestRoute(parseInt(leftScore.innerHTML))
 
             updateStats()
 
@@ -249,8 +254,10 @@ function addScore(score){
             if (endIndex == 3){rightScoreList.innerHTML = "";}
             else{rightScoreList.innerHTML = rightScoreList.innerHTML.substr(0, endIndex);}
 
+            rightDarts += 3;
+
             rightScore.innerHTML = parseInt(rightScore.innerHTML) + rightScores.pop(rightScores.length-1);
-            turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn<br> " + bestRoute(parseInt(rightScore.innerHTML))
+            turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn (" + rightDarts + " left)"  + bestRoute(parseInt(rightScore.innerHTML))
 
             updateStats()
 
@@ -338,7 +345,7 @@ function addScore(score){
             if (newScore == 0 || newScore >= 2) {
 
                 leftScore.innerHTML = newScore;
-                turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn<br> " + bestRoute(parseInt(rightScore.innerHTML))
+                turnCounter.innerHTML = "" + possessive(rightName.innerHTML) + " turn (" + rightDarts + " left)"  + bestRoute(parseInt(rightScore.innerHTML))
 
                 if (newScore == 0){
 
@@ -352,6 +359,8 @@ function addScore(score){
 
             }
 
+            leftDarts -= 3;
+
         } else {
 
             rightScoreList.innerHTML += score + " (from " + parseInt(rightScore.innerHTML) + ")<hr>";
@@ -359,7 +368,7 @@ function addScore(score){
             rightTotal += score;
             rightNum += 1;
             rightScoreList.scrollTop = rightScoreList.scrollHeight;
-            turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn<br> " + bestRoute(parseInt(leftScore.innerHTML))
+            turnCounter.innerHTML = "" + possessive(leftName.innerHTML) + " turn (" + leftDarts + " left)"  + bestRoute(parseInt(leftScore.innerHTML))
 
             newScore = parseInt(rightScore.innerHTML) - score;
             if (newScore == 0 || newScore >= 2) {
@@ -377,6 +386,8 @@ function addScore(score){
                 }
 
             }
+
+            rightDarts -= 3;
 
         }
 
@@ -441,7 +452,7 @@ function finishers(score){
 
     for (dart1Mod = 3; dart1Mod >= 1; dart1Mod--) {
 
-        for (dart2Mod = 3; dart2Mod >= 2; dart2Mod--) {
+        for (dart2Mod = 3; dart2Mod >= 1; dart2Mod--) {
 
             for (dart1 = 20; dart1 >= 1; dart1--) {
 
