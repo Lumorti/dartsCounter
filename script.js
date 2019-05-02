@@ -166,7 +166,7 @@ function startGame(){
     let x = document.getElementById("selection");
 
     x.style.display = "none";
-    game.style.display = "block";
+    game.style.display = "inline-block";
 
     resize();
     resetGame();
@@ -216,7 +216,7 @@ function addScore(score){
 
     if (split[0] == "help"){
 
-        alert("scores can be entered as:\n - 67\n - T20+20 Bull\n - t19 d13 b\n - treble 20 double 20 bull\n - 2*d20 6\n\ncan also use:\n - undo\n - reset\n - wins <left|right> <num>\n - name <left|right> <name>");
+        alert("scores can be entered as:\n - 67\n - T20 20 Bull\n - t19 d13 b\n - treble 20 double 20 bull\n - 2*d20 6\n\ncan also use:\n - undo\n - reset\n - wins <left|right> <num>\n - name <left|right> <name>");
 
     } else if (split[0] == "undo"){
 

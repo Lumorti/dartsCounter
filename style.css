@@ -4,14 +4,16 @@
 
 }
 
+html{text-align: center;}
+
 body{
 
     box-sizing: content-box;
     text-align: center;
     font-size: 1em;
     padding: 10px;
-    float: left;
-    overflow:hidden;
+    overflow: hidden;
+    margin: 0px auto;
 
 }
 
