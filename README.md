@@ -1,7 +1,7 @@
 # dartsCounter
 A simple web-based darts counter done with client-side javaScript.
 
-An implementation is online [here](https://dartscorer.co.uk/).
+An implementation is online [here](https://lumorti.github.io/dartsCounter/).
 
 ### Features:
  - enter scores in many different ways, let the computer add up for you
