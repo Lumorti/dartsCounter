@@ -124,8 +124,8 @@ function resetGame(){
     rightList.innerHTML = "";
     leftScores = [];
     rightScores = [];
-	leftDarts = 0;
-	rightDarts = 0;
+	leftDarts = 60;
+	rightDarts = 60;
 
     if (turn){
 
