@@ -124,6 +124,8 @@ function resetGame(){
     rightList.innerHTML = "";
     leftScores = [];
     rightScores = [];
+	leftDarts = 0;
+	rightDarts = 0;
 
     if (turn){
 
@@ -143,7 +145,7 @@ function bestRoute(score){
 
     if (score <= 170){
 
-        return "<br>checkout " + finishList[score-1];
+        return "<br>checkout: " + finishList[score-1];
 
     } else {
 
@@ -497,7 +499,7 @@ function finishers(score){
                             if (testScore == 50 && dart3 == 0) {returnString += "Bull";}
                             else if (dart3 > 0){returnString += multiplierToLetter(dart3Mod) + dart3;}
 
-                            sum = 5*dart1+3*dart2+dart3;
+                            sum = dart1+3*dart2+5*dart3;
                             if (dart2 == 0 && dart3 == 0 && testScore == 0){sum += 300;}
                             else if (dart3 == 0 && testScore == 0){sum += 100;}
                             if (dart1Mod == 3){sum += 50;}
